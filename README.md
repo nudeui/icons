@@ -44,7 +44,6 @@ Icons must be monochrome (varying opacity is fine), since they are applied as a 
 | `--icon-start` | `::before`  | Icon before the element's content        |
 | `--icon-end`   | `::after`   | Icon after the element's content         |
 | `--icon`       | (component) | "Give this component an icon", see below |
-| `--icon-color` | both        | Icon color. Defaults to `currentColor`   |
 
 Set them anywhere a declaration goes: a stylesheet, an inline style, a media query, a state:
 
@@ -65,6 +64,16 @@ a[href^="https://"] {
 ```
 
 Icons are `1em` squares, so they follow `font-size`. Elements with no content (e.g. an icon-only button) get no gap between icon and text.
+
+### Styling icons
+
+These are separate from the `--icon-*` tokens so they can never collide with an icon name. They inherit, so set them on any ancestor to style every icon inside it.
+
+| Property               | Default        | Meaning                      |
+| ---------------------- | -------------- | ---------------------------- |
+| `--icon-style-color`   | `currentColor` | Icon color                   |
+| `--icon-style-size`    | `1em`          | Icon width and height        |
+| `--icon-style-spacing` | `0.3em`        | Gap between icon and content |
 
 ### 3. Let components own the location
 

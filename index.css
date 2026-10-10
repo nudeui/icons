@@ -19,17 +19,17 @@
 	/* Drop the pseudo-element when there is no icon: var() fails, so content is unset */
 	content: image-set(linear-gradient(transparent 0 100%), var(--icon-start));
 	display: inline-block;
-	vertical-align: calc(0.5em - 0.47lh);
-	width: 1em;
-	height: 1em;
-	background-color: var(--icon-color, currentColor);
+	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+	width: var(--icon-style-size, 1em);
+	height: var(--icon-style-size, 1em);
+	background-color: var(--icon-style-color, currentColor);
 	mask: var(--icon-start) no-repeat center / contain;
 	pointer-events: none;
 	forced-color-adjust: none;
 }
 
 :where(.icon:not(:empty), .icon-start:not(:empty))::before {
-	margin-inline-end: 0.3em;
+	margin-inline-end: var(--icon-style-spacing, 0.3em);
 }
 :where(.icon-end)::after {
 	--icon-end: inherit;
@@ -37,17 +37,17 @@
 	/* Drop the pseudo-element when there is no icon: var() fails, so content is unset */
 	content: image-set(linear-gradient(transparent 0 100%), var(--icon-end));
 	display: inline-block;
-	vertical-align: calc(0.5em - 0.47lh);
-	width: 1em;
-	height: 1em;
-	background-color: var(--icon-color, currentColor);
+	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+	width: var(--icon-style-size, 1em);
+	height: var(--icon-style-size, 1em);
+	background-color: var(--icon-style-color, currentColor);
 	mask: var(--icon-end) no-repeat center / contain;
 	pointer-events: none;
 	forced-color-adjust: none;
 }
 
 :where(.icon-end:not(:empty))::after {
-	margin-inline-start: 0.3em;
+	margin-inline-start: var(--icon-style-spacing, 0.3em);
 }
 
 /* Any element that sets --icon-<location> */
@@ -56,17 +56,17 @@
 		--icon-start: inherit;
 		content: "";
 		display: inline-block;
-		vertical-align: calc(0.5em - 0.47lh);
-		width: 1em;
-		height: 1em;
-		background-color: var(--icon-color, currentColor);
+		vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+		width: var(--icon-style-size, 1em);
+		height: var(--icon-style-size, 1em);
+		background-color: var(--icon-style-color, currentColor);
 		mask: var(--icon-start) no-repeat center / contain;
 		pointer-events: none;
 		forced-color-adjust: none;
 	}
 
 	:where(:not(:empty))::before {
-		margin-inline-end: 0.3em;
+		margin-inline-end: var(--icon-style-spacing, 0.3em);
 	}
 }
 @container style(--icon-end) {
@@ -74,17 +74,17 @@
 		--icon-end: inherit;
 		content: "";
 		display: inline-block;
-		vertical-align: calc(0.5em - 0.47lh);
-		width: 1em;
-		height: 1em;
-		background-color: var(--icon-color, currentColor);
+		vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+		width: var(--icon-style-size, 1em);
+		height: var(--icon-style-size, 1em);
+		background-color: var(--icon-style-color, currentColor);
 		mask: var(--icon-end) no-repeat center / contain;
 		pointer-events: none;
 		forced-color-adjust: none;
 	}
 
 	:where(:not(:empty))::after {
-		margin-inline-start: 0.3em;
+		margin-inline-start: var(--icon-style-spacing, 0.3em);
 	}
 }
 
