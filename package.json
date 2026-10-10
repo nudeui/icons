@@ -1,0 +1,46 @@
+{
+	"name": "@nudeui/icons",
+	"version": "0.0.1",
+	"description": "CSS-only icon system: icons are design tokens, placed with a custom property, rendered with a mask",
+	"keywords": [
+		"icons",
+		"css",
+		"design-systems",
+		"design-tokens",
+		"ui"
+	],
+	"homepage": "https://github.com/nudeui/icons/#readme",
+	"bugs": {
+		"url": "https://github.com/nudeui/icons/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nudeui/icons.git"
+	},
+	"files": [
+		"index.css"
+	],
+	"license": "MIT",
+	"author": "Lea Verou",
+	"funding": [
+		{
+			"type": "individual",
+			"url": "https://github.com/sponsors/LeaVerou"
+		}
+	],
+	"type": "module",
+	"style": "index.css",
+	"exports": {
+		".": "./index.css"
+	},
+	"scripts": {
+		"release": "npm whoami >/dev/null 2>&1 || npm login && release-it"
+	},
+	"devDependencies": {
+		"prettier": "~3.5.3",
+		"prettier-plugin-brace-style": "latest",
+		"prettier-plugin-merge": "latest",
+		"prettier-plugin-space-before-function-paren": "latest",
+		"release-it": "latest"
+	}
+}

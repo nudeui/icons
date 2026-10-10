@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>@nudeui/icons tests</title>
+		<link rel="stylesheet" href="icons.css" />
+		<link rel="stylesheet" href="../index.css" />
+		<style>
+			body {
+				font-family: system-ui;
+				display: flex;
+				flex-flow: column;
+				gap: 1.5rem;
+				padding: 1rem 2rem;
+			}
+
+			section {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 0.5rem 1rem;
+			}
+
+			h2 {
+				margin: 0;
+				inline-size: 100%;
+				font-size: 1rem;
+				font-weight: 500;
+				color: gray;
+			}
+
+			button {
+				background: buttonface;
+				color: buttontext;
+				border: none;
+				padding: 0.4em 0.8em;
+				border-radius: 0.25em;
+				font: inherit;
+
+				/* Component: redirect --icon to a location */
+				:where(&) {
+					--icon-start: var(--icon);
+				}
+
+				&:hover {
+					background: accentcolor;
+					color: white;
+					--icon-start: var(--icon-hover, var(--icon));
+				}
+
+				&.danger {
+					background: hsl(0 100% 90%);
+					color: black;
+					--icon: var(--icon-trash-outlined);
+
+					&:hover {
+						background: hsl(0 100% 40%);
+						color: white;
+						--icon: var(--icon-trash);
+					}
+				}
+			}
+
+			a[href^="https://"]
+			{
+				--icon-end: var(--icon-link-external);
+			}
+
+			.big {
+				font-size: 200%;
+			}
+		</style>
+	</head>
+	<body>
+		<section>
+			<h2>Buttons (<code>--icon</code> redirected to <code>--icon-start</code>)</h2>
+			<button>No icon</button>
+			<button style="--icon: var(--icon-github)">One-off icon</button>
+			<button class="danger">Default icon</button>
+			<button class="danger">
+				With <strong>inline <em>style</em></strong>
+			</button>
+			<button style="--icon: var(--icon-github); --icon-hover: var(--icon-link-external)">
+				GitHub to link on hover
+			</button>
+			<button style="--icon: var(--icon-trash); --icon-color: red">Icon color</button>
+			<button style="--icon: var(--icon-trash)" aria-label="Delete"></button>
+		</section>
+
+		<section>
+			<h2>Links (<code>--icon-end</code>)</h2>
+			<a href="https://lea.verou.me">External link</a>
+			<a href="/">Internal link</a>
+			<a href="https://github.com/nudeui/icons" style="--icon-start: var(--icon-github)"
+				>Both ends</a
+			>
+		</section>
+
+		<section>
+			<h2>Standalone (<code>.icon</code>, no style query needed)</h2>
+			<i class="icon" style="--icon: var(--icon-trash)"></i>
+			<i class="icon big" style="--icon: var(--icon-github)"></i>
+			<i class="icon" style="--icon: var(--icon-link-external); --icon-color: blue"></i>
+			<span class="icon-start" style="--icon-start: var(--icon-trash)"
+				>.icon-start with text</span
+			>
+			<span class="icon-end" style="--icon-end: var(--icon-trash)">.icon-end with text</span>
+		</section>
+
+		<section>
+			<h2>Text (icons follow font size, no descendant leakage)</h2>
+			<p style="--icon-start: var(--icon-trash)">
+				Paragraph with <strong>bold</strong>, <em>italic</em> and <a href="/">a link</a>,
+				none of which should sprout icons.
+			</p>
+			<p class="big" style="--icon-start: var(--icon-trash)">Bigger text</p>
+		</section>
+	</body>
+</html>
