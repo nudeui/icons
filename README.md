@@ -20,7 +20,7 @@ npm install @nudeui/icons
 @import "@nudeui/icons";
 ```
 
-or link `node_modules/@nudeui/icons/index.css` however your project links CSS.
+or link `path/to/@nudeui/icons/index.css` however your project links CSS.
 
 ## Usage
 
