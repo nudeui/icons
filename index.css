@@ -16,6 +16,8 @@
 :where(.icon, .icon-start)::before {
 	--icon-start: inherit;
 	content: "";
+	/* Drop the pseudo-element when there is no icon: var() fails, so content is unset */
+	content: image-set(linear-gradient(transparent 0 100%), var(--icon-start));
 	display: inline-block;
 	vertical-align: calc(0.5em - 0.47lh);
 	width: 1em;
@@ -32,6 +34,8 @@
 :where(.icon-end)::after {
 	--icon-end: inherit;
 	content: "";
+	/* Drop the pseudo-element when there is no icon: var() fails, so content is unset */
+	content: image-set(linear-gradient(transparent 0 100%), var(--icon-end));
 	display: inline-block;
 	vertical-align: calc(0.5em - 0.47lh);
 	width: 1em;

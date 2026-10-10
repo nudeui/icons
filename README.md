@@ -98,7 +98,7 @@ Since the icon is a pseudo-element, the element itself can carry a background, b
 
 Icons are applied to any element that sets `--icon-start` / `--icon-end`, which relies on [style queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_size_and_style_queries#container_style_queries). In browsers without them, icons are simply absent, which makes them a progressive enhancement.
 
-Where an icon is essential, opt in explicitly with `.icon`, `.icon-start` or `.icon-end`. These work in any browser that supports [masks](https://developer.mozilla.org/en-US/docs/Web/CSS/mask).
+Where an icon is essential, opt in explicitly with `.icon`, `.icon-start` or `.icon-end`. These work in any browser that supports [masks](https://developer.mozilla.org/en-US/docs/Web/CSS/mask). They only hardcode the location, not the icon: if the property is unset, no pseudo-element is generated.
 
 ## Caveats
 
