@@ -1,0 +1,124 @@
+@property --icon-start {
+	syntax: "*";
+	inherits: false;
+}
+@property --icon-end {
+	syntax: "*";
+	inherits: false;
+}
+
+/* The icon: a square filled with the icon color, masked by the icon shape */
+@mixin --icon {
+	content: "";
+	display: inline-block;
+	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+	width: var(--icon-style-size, 1em);
+	height: var(--icon-style-size, 1em);
+	background-color: var(--icon-style-color, currentColor);
+	mask: no-repeat center / contain;
+	pointer-events: none;
+	forced-color-adjust: none;
+}
+
+@mixin --icon-start {
+	@apply --icon;
+	--icon-start: inherit;
+	/* Drop the pseudo-element when there is no icon: var() fails, so content is unset */
+	content: image-set(linear-gradient(transparent 0 100%), var(--icon-start));
+	mask-image: var(--icon-start);
+}
+
+@mixin --icon-end {
+	@apply --icon;
+	--icon-end: inherit;
+	content: image-set(linear-gradient(transparent 0 100%), var(--icon-end));
+	mask-image: var(--icon-end);
+}
+
+/* Standalone icon, e.g. <i class="icon" style="--icon: var(--icon-trash)"></i> */
+:where(.icon) {
+	--icon-start: var(--icon);
+}
+
+/* Explicit opt-in, also works without style queries */
+:where(.icon, .icon-start)::before {
+	@apply --icon-start;
+}
+
+:where(.icon:not(:empty), .icon-start:not(:empty))::before {
+	margin-inline-end: var(--icon-style-spacing, 0.3em);
+}
+
+:where(.icon-end)::after {
+	@apply --icon-end;
+}
+
+:where(.icon-end:not(:empty))::after {
+	margin-inline-start: var(--icon-style-spacing, 0.3em);
+}
+
+/* Any element that sets --icon-<location> */
+@container style(--icon-start) {
+	::before {
+		@apply --icon-start;
+	}
+
+	:where(:not(:empty))::before {
+		margin-inline-end: var(--icon-style-spacing, 0.3em);
+	}
+}
+
+@container style(--icon-end) {
+	::after {
+		@apply --icon-end;
+	}
+
+	:where(:not(:empty))::after {
+		margin-inline-start: var(--icon-style-spacing, 0.3em);
+	}
+}
+
+/* Workaround for https://bugs.webkit.org/show_bug.cgi?id=301609
+   A zero-duration animation on the pseudo-elements forces WebKit
+   to re-resolve style, this time against the correct container.
+   Must be outside the @container block (which is false on the first pass). */
+@keyframes webkit-301609 {
+}
+
+@supports (
+		(-webkit-nbsp-mode: normal) or (-webkit-touch-callout: none) or (font: -apple-system-body)
+	)
+	and (content-visibility: auto) {
+	@layer webkit-301609-fix {
+		::before,
+		::after {
+			animation: webkit-301609 0s;
+		}
+	}
+
+	/* Workaround for https://bugs.webkit.org/show_bug.cgi?id=325900
+	   `inherit` on non-inherited registered properties is unreliable,
+	   so register them as inherited (last registration wins)
+	   and reset them on descendants instead. */
+	@property --icon-start {
+		syntax: "*";
+		inherits: true;
+	}
+	@property --icon-end {
+		syntax: "*";
+		inherits: true;
+	}
+
+	@layer webkit-325900-fix {
+		@container style(--icon-start) {
+			* {
+				--icon-start: initial;
+			}
+		}
+		@container style(--icon-end) {
+			* {
+				--icon-end: initial;
+			}
+		}
+	}
+}

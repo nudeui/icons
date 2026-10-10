@@ -18,7 +18,8 @@
 		"url": "git+https://github.com/nudeui/icons.git"
 	},
 	"files": [
-		"index.css"
+		"index.css",
+		"src"
 	],
 	"license": "MIT",
 	"author": "Lea Verou",
@@ -31,12 +32,19 @@
 	"type": "module",
 	"style": "index.css",
 	"exports": {
-		".": "./index.css"
+		".": "./index.css",
+		"./src/*": "./src/*"
 	},
 	"scripts": {
+		"build": "postcss src/index.css -o index.css && prettier --write index.css",
+		"dev": "postcss src/index.css -o index.css --watch",
+		"prepack": "npm run build",
 		"release": "npm whoami >/dev/null 2>&1 || npm login && release-it"
 	},
 	"devDependencies": {
+		"@csstools/postcss-mixins": "^1.1.0",
+		"postcss": "^8",
+		"postcss-cli": "^11",
 		"prettier": "~3.5.3",
 		"prettier-plugin-brace-style": "latest",
 		"prettier-plugin-merge": "latest",

@@ -6,6 +6,12 @@
 		<title>@nudeui/icons tests</title>
 		<link rel="stylesheet" href="icons.css" />
 		<link rel="stylesheet" href="../index.css" />
+	<script>
+		// ?native loads the untranspiled @mixin source, to test native support
+		if (location.search.includes("native")) {
+			document.querySelector("link[href='../index.css']").href = "../src/index.css";
+		}
+	</script>
 		<style>
 			body {
 				font-family: system-ui;

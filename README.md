@@ -121,4 +121,11 @@ Everything is Baseline. Style queries are the newest requirement (Chrome 111, Sa
 
 ## Development
 
-To check rendering, serve the repo root (e.g. `npx serve`) and open `test/index.html`.
+The source is `src/index.css`, written with [CSS mixins](https://drafts.csswg.org/css-mixins/) (`@mixin` / `@apply`) so the icon styles are declared once. No browser applies them natively yet, so `index.css` is transpiled from it with [@csstools/postcss-mixins](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-mixins) and committed.
+
+```sh
+npm run build   # src/index.css → index.css
+npm run dev     # rebuild on change
+```
+
+To check rendering, serve the repo root (e.g. `npx serve`) and open `test/index.html`. Append `?native` to load the untranspiled source instead, for testing native mixin support.
