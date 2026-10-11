@@ -111,7 +111,7 @@ Where an icon is essential, opt in explicitly with `.icon`, `.icon-start` or `.i
 
 ## Caveats
 
-- **Relative URLs** in icon tokens resolve relative to the stylesheet that _uses_ the icon, not the one that defines it. Use root-relative or absolute URLs for icon files, or embed them.
+- **Relative URLs** in icon tokens resolve relative to the stylesheet that _uses_ the icon, not the one that defines it. Use root-relative or absolute URLs for icon files, embed them, or register them as an `<image>` property via `@property` which forces them to be resolved relative to the stylesheet that defines them.
 - **Multi-color icons** are not supported, since the icon is a mask.
 - **Backgrounds or borders on the icon itself** are not possible; put them on the element instead (see standalone icons).
 
