@@ -7,32 +7,18 @@
 	inherits: false;
 }
 
-/* The icon: a square filled with the icon color, masked by the icon shape */
-@mixin --icon {
-	content: "";
+/* A square filled with the icon color, masked by the icon shape.
+   Dropped when --image is unset: var() fails, so content is unset */
+@mixin --icon(--image) {
+	content: image-set(linear-gradient(transparent 0 100%), var(--image));
 	display: inline-block;
 	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
 	width: var(--icon-style-size, 1em);
 	height: var(--icon-style-size, 1em);
 	background-color: var(--icon-style-color, currentColor);
-	mask: no-repeat center / contain;
+	mask: var(--image) no-repeat center / contain;
 	pointer-events: none;
 	forced-color-adjust: none;
-}
-
-@mixin --icon-start {
-	@apply --icon;
-	--icon-start: inherit;
-	/* Drop the pseudo-element when there is no icon: var() fails, so content is unset */
-	content: image-set(linear-gradient(transparent 0 100%), var(--icon-start));
-	mask-image: var(--icon-start);
-}
-
-@mixin --icon-end {
-	@apply --icon;
-	--icon-end: inherit;
-	content: image-set(linear-gradient(transparent 0 100%), var(--icon-end));
-	mask-image: var(--icon-end);
 }
 
 /* Standalone icon, e.g. <i class="icon" style="--icon: var(--icon-trash)"></i> */
@@ -42,7 +28,8 @@
 
 /* Explicit opt-in, also works without style queries */
 :where(.icon, .icon-start)::before {
-	@apply --icon-start;
+	--icon-start: inherit;
+	@apply --icon(var(--icon-start));
 }
 
 :where(.icon:not(:empty), .icon-start:not(:empty))::before {
@@ -50,7 +37,8 @@
 }
 
 :where(.icon-end)::after {
-	@apply --icon-end;
+	--icon-end: inherit;
+	@apply --icon(var(--icon-end));
 }
 
 :where(.icon-end:not(:empty))::after {
@@ -60,7 +48,8 @@
 /* Any element that sets --icon-<location> */
 @container style(--icon-start) {
 	::before {
-		@apply --icon-start;
+		--icon-start: inherit;
+		@apply --icon(var(--icon-start));
 	}
 
 	:where(:not(:empty))::before {
@@ -70,7 +59,8 @@
 
 @container style(--icon-end) {
 	::after {
-		@apply --icon-end;
+		--icon-end: inherit;
+		@apply --icon(var(--icon-end));
 	}
 
 	:where(:not(:empty))::after {
