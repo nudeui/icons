@@ -19,7 +19,8 @@
 	},
 	"files": [
 		"icons.css",
-		"icons-mixins.css"
+		"icons-mixins.css",
+		"skills"
 	],
 	"license": "MIT",
 	"author": "Lea Verou",

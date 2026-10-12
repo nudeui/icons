@@ -119,6 +119,16 @@ Where an icon is essential, opt in explicitly with `.icon`, `.icon-start` or `.i
 
 Everything is Baseline. Style queries are the newest requirement (Chrome 111, Safari 18, Firefox 2026). Safari 18+ needs workarounds for two WebKit bugs ([#301609](https://bugs.webkit.org/show_bug.cgi?id=301609), [#325900](https://bugs.webkit.org/show_bug.cgi?id=325900)), which the stylesheet ships, scoped to WebKit and in their own cascade layers so your own declarations always win.
 
+## AI agents
+
+The package ships an [agent skill](skills/nudeui-icons/SKILL.md) that teaches coding agents how to add, swap, define and style icons the way this system intends, instead of reaching for inline SVG or icon components. Point your agent at it, or copy or symlink it into your agent's skills directory (e.g. `.claude/skills/`):
+
+```sh
+ln -s ../../node_modules/@nudeui/icons/skills/nudeui-icons .claude/skills/nudeui-icons
+```
+
+It includes `scripts/svg-to-token.js`, which turns an SVG file into an `--icon-*` declaration with the right quoting and escaping.
+
 ## Development
 
 The source is `icons-mixins.css`, written with [CSS mixins](https://drafts.csswg.org/css-mixins/) (`@mixin` / `@apply`) so the icon styles are declared once. No browser applies them natively yet, so `icons.css` is transpiled from it with [@csstools/postcss-mixins](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-mixins) and committed.
