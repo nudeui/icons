@@ -19,6 +19,7 @@
 	mask: var(--image) no-repeat center / contain;
 	pointer-events: none;
 	forced-color-adjust: none;
+	flex: none;
 }
 
 /* Standalone icon, e.g. <i class="icon" style="--icon: var(--icon-trash)"></i> */
