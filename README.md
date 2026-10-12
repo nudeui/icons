@@ -20,7 +20,7 @@ npm install @nudeui/icons
 @import "@nudeui/icons";
 ```
 
-or link `path/to/@nudeui/icons/index.css` however your project links CSS.
+or link `path/to/@nudeui/icons/icons.css` however your project links CSS.
 
 ## Usage
 
@@ -121,10 +121,10 @@ Everything is Baseline. Style queries are the newest requirement (Chrome 111, Sa
 
 ## Development
 
-The source is `src/index.css`, written with [CSS mixins](https://drafts.csswg.org/css-mixins/) (`@mixin` / `@apply`) so the icon styles are declared once. No browser applies them natively yet, so `index.css` is transpiled from it with [@csstools/postcss-mixins](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-mixins) and committed.
+The source is `icons-mixins.css`, written with [CSS mixins](https://drafts.csswg.org/css-mixins/) (`@mixin` / `@apply`) so the icon styles are declared once. No browser applies them natively yet, so `icons.css` is transpiled from it with [@csstools/postcss-mixins](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-mixins) and committed.
 
 ```sh
-npm run build   # src/index.css → index.css
+npm run build   # icons-mixins.css → icons.css
 npm run dev     # rebuild on change
 ```
 
