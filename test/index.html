@@ -10,32 +10,142 @@
 			// ?native loads the untranspiled @mixin source, to test native support
 			if (location.search.includes("native")) {
 				document.querySelector("link[href='../icons.css']").href = "../icons-mixins.css";
+				document.documentElement.dataset.source = "native";
+			}
+
+			function setIcon(value) {
+				document.getElementById("js-target").style.setProperty("--icon-start", value);
 			}
 		</script>
 		<style>
+			/* Page chrome */
+			:root {
+				color-scheme: light dark;
+			}
+
 			body {
 				font-family: system-ui;
-				display: flex;
-				flex-flow: column;
-				gap: 1.5rem;
+				line-height: 1.5;
+				max-inline-size: 75rem;
+				margin: auto;
 				padding: 1rem 2rem;
 			}
 
-			section {
+			header {
 				display: flex;
-				flex-wrap: wrap;
-				align-items: center;
-				gap: 0.5rem 1rem;
+				flex-flow: column;
+				gap: 0.5rem;
+
+				h1 {
+					margin: 0;
+				}
+
+				p {
+					margin: 0;
+				}
 			}
 
-			h2 {
-				margin: 0;
-				inline-size: 100%;
-				font-size: 1rem;
-				font-weight: 500;
+			/* Current stylesheet under test */
+			html:not([data-source]) a[href="?"],
+			html[data-source="native"] a[href="?native"] {
+				font-weight: bold;
+				color: inherit;
+				text-decoration: none;
+			}
+
+			section {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+				gap: 1rem;
+				margin-block: 2rem;
+
+				> h2 {
+					grid-column: 1 / -1;
+					margin: 0;
+					border-block-end: 1px solid;
+				}
+			}
+
+			article {
+				display: flex;
+				flex-flow: column;
+				align-items: start;
+				gap: 0.6rem;
+				padding: 0.75rem 1rem;
+				border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+				border-radius: 0.3rem;
+
+				> * {
+					margin: 0;
+				}
+
+				> h3 {
+					font-size: 1rem;
+				}
+
+				/* Expected result */
+				> h3 + p {
+					font-size: 0.85rem;
+					color: color-mix(in srgb, currentColor 65%, transparent);
+				}
+			}
+
+			table {
+				border-collapse: collapse;
+			}
+
+			th,
+			td {
+				vertical-align: baseline;
+				padding-block: 0.2em;
+			}
+
+			th {
+				font-weight: normal;
+				font-size: 0.8rem;
 				color: gray;
+				text-align: start;
+				white-space: nowrap;
+				padding-inline-end: 1em;
 			}
 
+			/* Every cell of a samples table gets the same icon; rows vary one condition */
+			.samples td {
+				--icon-start: var(--icon-trash);
+			}
+
+			/* Guides: strikethrough marks the text's visual center, a frame shows icon bounds.
+			   The mask clips outlines too, so the frame is drawn as extra mask layers. */
+			body:has(#guides:checked) article {
+				--bounds:
+					linear-gradient(#000 0 0) no-repeat top / 100% 1px,
+					linear-gradient(#000 0 0) no-repeat bottom / 100% 1px,
+					linear-gradient(#000 0 0) no-repeat left / 1px 100%,
+					linear-gradient(#000 0 0) no-repeat right / 1px 100%;
+
+				td,
+				.align {
+					text-decoration: line-through 1px red;
+				}
+
+				*::before {
+					mask:
+						var(--icon-start) no-repeat center / contain,
+						var(--bounds);
+				}
+
+				*::after {
+					mask:
+						var(--icon-end) no-repeat center / contain,
+						var(--bounds);
+				}
+			}
+
+			.box {
+				outline: 1px dotted;
+			}
+
+			/* Component: redirect --icon to a location */
 			button {
 				background: buttonface;
 				color: buttontext;
@@ -44,7 +154,6 @@
 				border-radius: 0.25em;
 				font: inherit;
 
-				/* Component: redirect --icon to a location */
 				:where(&) {
 					--icon-start: var(--icon);
 				}
@@ -73,61 +182,589 @@
 				--icon-end: var(--icon-link-external);
 			}
 
-			.big {
-				font-size: 200%;
+			/* Component: a form control carrying its own icon.
+			   Grid centers the icon, so the inline vertical-align math doesn't apply here. */
+			.checkbox {
+				appearance: none;
+				display: inline-grid;
+				place-content: center;
+				inline-size: 1em;
+				block-size: 1em;
+				margin: 0;
+				border: 1px solid;
+				border-radius: 0.2em;
+				font: inherit;
+
+				&:checked {
+					--icon-start: var(--icon-check);
+				}
+			}
+
+			/* Dynamic */
+			.hover-swap {
+				--icon-start: var(--icon-trash-outlined);
+
+				&:hover {
+					--icon-start: var(--icon-trash);
+				}
+			}
+
+			.hover-add:hover {
+				--icon-start: var(--icon-check);
+			}
+
+			.hover-remove {
+				--icon-start: var(--icon-trash);
+
+				&:hover {
+					--icon-start: initial;
+				}
+			}
+
+			.checkable:has(:checked) {
+				--icon-end: var(--icon-check);
+			}
+
+			details > summary {
+				--icon-start: var(--icon-chevron-right);
+			}
+
+			details[open] > summary {
+				--icon-start: var(--icon-chevron-down);
+			}
+
+			.scheme {
+				--icon-start: var(--icon-trash-outlined);
+
+				@media (prefers-color-scheme: dark) {
+					--icon-start: var(--icon-trash);
+				}
+			}
+
+			.print {
+				@media print {
+					--icon-end: var(--icon-link-external);
+				}
+			}
+
+			.resizable {
+				container-type: inline-size;
+				resize: horizontal;
+				overflow: hidden;
+				max-inline-size: 100%;
+				min-inline-size: 6rem;
+				padding: 0.5rem;
+				border: 1px dashed;
+			}
+
+			@container (inline-size < 15rem) {
+				.narrow {
+					--icon-start: var(--icon-trash);
+				}
+			}
+
+			/* Custom properties animate discretely: the value flips halfway through */
+			.animated {
+				--icon-start: var(--icon-trash-outlined);
+				animation: swap 2s infinite;
+			}
+
+			@keyframes swap {
+				to {
+					--icon-start: var(--icon-trash);
+				}
+			}
+
+			/* Styling */
+			.themed {
+				--icon-style-size: 1.5em;
+				--icon-style-color: rebeccapurple;
+				--icon-style-spacing: 0.6em;
+			}
+
+			.truncated {
+				inline-size: 10rem;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
 		</style>
 	</head>
 	<body>
-		<section>
-			<h2>Buttons (<code>--icon</code> redirected to <code>--icon-start</code>)</h2>
-			<button>No icon</button>
-			<button style="--icon: var(--icon-github)">One-off icon</button>
-			<button class="danger">Default icon</button>
-			<button class="danger">
-				With <strong>inline <em>style</em></strong>
-			</button>
-			<button style="--icon: var(--icon-github); --icon-hover: var(--icon-link-external)">
-				GitHub to link on hover
-			</button>
-			<button style="--icon: var(--icon-trash); --icon-style-color: red">Icon color</button>
-			<button style="--icon: var(--icon-trash); --icon-style-size: 1.5em">Icon size</button>
-			<button style="--icon: var(--icon-trash); --icon-style-spacing: 1em">
-				Icon spacing
-			</button>
-			<button style="--icon: var(--icon-trash)" aria-label="Delete"></button>
-		</section>
-
-		<section>
-			<h2>Links (<code>--icon-end</code>)</h2>
-			<a href="https://lea.verou.me">External link</a>
-			<a href="/">Internal link</a>
-			<a href="https://github.com/nudeui/icons" style="--icon-start: var(--icon-github)"
-				>Both ends</a
-			>
-		</section>
-
-		<section>
-			<h2>Standalone (<code>.icon</code>, no style query needed)</h2>
-			<i class="icon" style="--icon: var(--icon-trash)"></i>
-			<i class="icon big" style="--icon: var(--icon-github)"></i>
-			<i class="icon" style="--icon: var(--icon-link-external); --icon-style-color: blue"></i>
-			<span class="icon-start" style="--icon-start: var(--icon-trash)"
-				>.icon-start with text</span
-			>
-			<span class="icon-end" style="--icon-end: var(--icon-trash)">.icon-end with text</span>
-			<span class="icon-start">.icon-start without an icon (no square)</span>
-			<i class="icon">[</i><i class="icon">]</i> (empty .icon without an icon: nothing between
-			the brackets)
-		</section>
-
-		<section>
-			<h2>Text (icons follow font size, no descendant leakage)</h2>
-			<p style="--icon-start: var(--icon-trash)">
-				Paragraph with <strong>bold</strong>, <em>italic</em> and <a href="/">a link</a>,
-				none of which should sprout icons.
+		<header>
+			<h1>@nudeui/icons tests</h1>
+			<p>
+				Each test says what you should see. Some need you to hover, resize, print, or switch
+				color scheme.
 			</p>
-			<p class="big" style="--icon-start: var(--icon-trash)">Bigger text</p>
+			<p>
+				Stylesheet under test: <a href="?">icons.css</a> ·
+				<a href="?native">icons-mixins.css (native <code>@mixin</code>)</a>
+			</p>
+			<p>
+				<label>
+					<input type="checkbox" id="guides" />
+					Show guides: strikethrough marks the text's visual center, a frame shows each
+					icon's bounds
+				</label>
+			</p>
+			<nav>
+				<a href="#placement">Placement</a> · <a href="#dynamic">Dynamic</a> ·
+				<a href="#styling">Styling</a> · <a href="#isolation">Isolation</a>
+			</nav>
+		</header>
+
+		<section id="placement">
+			<h2>Placement</h2>
+
+			<article>
+				<h3>Locations</h3>
+				<p>Icon before, after, or on both sides of the text.</p>
+				<p style="--icon-start: var(--icon-trash)">Start</p>
+				<p style="--icon-end: var(--icon-link-external)">End</p>
+				<p style="--icon-start: var(--icon-trash); --icon-end: var(--icon-link-external)">
+					Both
+				</p>
+			</article>
+
+			<article>
+				<h3>Icon-only elements</h3>
+				<p>
+					No gap: the dotted box is exactly the icon, and nothing shows between the
+					brackets.
+				</p>
+				<p>
+					<span class="box" style="--icon-start: var(--icon-trash)"></span>
+					<span class="box" style="--icon-end: var(--icon-trash)"></span>
+					[<span style="--icon-start: var(--icon-trash)"></span>]
+				</p>
+			</article>
+
+			<article>
+				<h3>Any element</h3>
+				<p>Works on list items, labels, links, headings, anything with pseudo-elements.</p>
+				<ul>
+					<li style="--icon-start: var(--icon-check)">List item</li>
+					<li style="--icon-start: var(--icon-check)">Another one</li>
+				</ul>
+				<label style="--icon-start: var(--icon-trash)">Label</label>
+				<a href="/" style="--icon-start: var(--icon-github)">Link</a>
+				<h4 style="--icon-start: var(--icon-github)">Heading</h4>
+			</article>
+
+			<article>
+				<h3>Replaced elements</h3>
+				<p>
+					With <code>appearance: none</code>, form controls get pseudo-elements. The check
+					mark inside the box is the icon.
+				</p>
+				<label><input type="checkbox" class="checkbox" /> Check me</label>
+			</article>
+
+			<article>
+				<h3>Buttons (<code>--icon</code> redirected to <code>--icon-start</code>)</h3>
+				<p>
+					The component decides where its icon goes; consumers only set
+					<code>--icon</code>.
+				</p>
+				<p>
+					<button>No icon</button>
+					<button style="--icon: var(--icon-github)">One-off icon</button>
+					<button class="danger">Default icon</button>
+					<button style="--icon: var(--icon-trash)" aria-label="Delete"></button>
+				</p>
+				<button class="danger">
+					With <strong>inline <em>style</em></strong>
+				</button>
+			</article>
+
+			<article>
+				<h3>Links (<code>--icon-end</code> from a selector)</h3>
+				<p>External links get an icon from the stylesheet, internal links don't.</p>
+				<p>
+					<a href="https://lea.verou.me">External link</a> ·
+					<a href="/">Internal link</a> ·
+					<a
+						href="https://github.com/nudeui/icons"
+						style="--icon-start: var(--icon-github)"
+					>
+						Both ends
+					</a>
+				</p>
+			</article>
+
+			<article>
+				<h3>Explicit classes (no style queries)</h3>
+				<p>
+					Same rendering as above via <code>.icon</code>, <code>.icon-start</code>,
+					<code>.icon-end</code>.
+				</p>
+				<p>
+					<i class="icon" style="--icon: var(--icon-trash)"></i>
+					<i class="icon" style="--icon: var(--icon-github); font-size: 200%"></i>
+					<span class="icon-start" style="--icon-start: var(--icon-trash)">Start</span>
+					<span class="icon-end" style="--icon-end: var(--icon-trash)">End</span>
+				</p>
+			</article>
+		</section>
+
+		<section id="dynamic">
+			<h2>Dynamic</h2>
+
+			<article>
+				<h3>Hover: swap</h3>
+				<p>Outlined trash becomes filled on hover.</p>
+				<p class="hover-swap">Hover me</p>
+				<button style="--icon: var(--icon-github); --icon-hover: var(--icon-link-external)">
+					GitHub to link on hover
+				</button>
+			</article>
+
+			<article>
+				<h3>Hover: add</h3>
+				<p>No icon until hovered, then a check mark appears before the text.</p>
+				<p class="hover-add">Hover me</p>
+			</article>
+
+			<article>
+				<h3>Hover: remove</h3>
+				<p>Icon and its gap disappear on hover; the text doesn't shift.</p>
+				<p class="hover-remove">Hover me</p>
+			</article>
+
+			<article>
+				<h3>State: checked</h3>
+				<p>A check mark appears after the label when the box is checked.</p>
+				<label class="checkable"><input type="checkbox" /> Check me</label>
+			</article>
+
+			<article>
+				<h3>State: open</h3>
+				<p>Chevron points right when closed, down when open.</p>
+				<details>
+					<summary>Toggle me</summary>
+					Content
+				</details>
+			</article>
+
+			<article>
+				<h3>Color scheme</h3>
+				<p>
+					Outlined trash in light mode, filled in dark mode. Icon follows the text color.
+				</p>
+				<p class="scheme">Switch your OS color scheme</p>
+			</article>
+
+			<article>
+				<h3>Print</h3>
+				<p>An external-link icon appears after the link only in print preview.</p>
+				<a href="https://lea.verou.me" class="print">Print this page</a>
+			</article>
+
+			<article>
+				<h3>Container query</h3>
+				<p>Drag the handle: an icon appears when the container is narrower than 15rem.</p>
+				<div class="resizable">
+					<span class="narrow">Resize me</span>
+				</div>
+			</article>
+
+			<article>
+				<h3>JavaScript</h3>
+				<p>The icon updates as soon as the inline style changes.</p>
+				<p id="js-target" style="--icon-start: var(--icon-trash)">Target</p>
+				<p>
+					<button type="button" onclick="setIcon('var(--icon-trash)')">Trash</button>
+					<button type="button" onclick="setIcon('var(--icon-github)')">GitHub</button>
+					<button type="button" onclick="setIcon('')">None</button>
+				</p>
+			</article>
+
+			<article>
+				<h3>Animation</h3>
+				<p>Alternates between outlined and filled every second.</p>
+				<p class="animated">Animated</p>
+			</article>
+		</section>
+
+		<section id="styling">
+			<h2>Styling</h2>
+
+			<article>
+				<h3>Font size</h3>
+				<p>Icon is 1em: it scales with the text and stays centered on it.</p>
+				<table class="samples">
+					<tr>
+						<th>10px</th>
+						<td style="font-size: 10px">Delete item</td>
+					</tr>
+					<tr>
+						<th>16px</th>
+						<td style="font-size: 16px">Delete item</td>
+					</tr>
+					<tr>
+						<th>24px</th>
+						<td style="font-size: 24px">Delete item</td>
+					</tr>
+					<tr>
+						<th>48px</th>
+						<td style="font-size: 48px">Delete item</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Line height</h3>
+				<p>Icon position relative to its line's text doesn't change with line height.</p>
+				<table class="samples">
+					<tr>
+						<th>1</th>
+						<td style="line-height: 1">Delete item<br />second line</td>
+					</tr>
+					<tr>
+						<th>1.5</th>
+						<td style="line-height: 1.5">Delete item<br />second line</td>
+					</tr>
+					<tr>
+						<th>3</th>
+						<td style="line-height: 3">Delete item<br />second line</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Font family</h3>
+				<p>Icon stays centered on the text across fonts with different metrics.</p>
+				<table class="samples">
+					<tr>
+						<th>system-ui</th>
+						<td style="font-family: system-ui">Delete item</td>
+					</tr>
+					<tr>
+						<th>serif</th>
+						<td style="font-family: serif">Delete item</td>
+					</tr>
+					<tr>
+						<th>monospace</th>
+						<td style="font-family: monospace">Delete item</td>
+					</tr>
+					<tr>
+						<th>cursive</th>
+						<td style="font-family: cursive">Delete item</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Weight and style</h3>
+				<p>Text styling doesn't affect the icon.</p>
+				<table class="samples">
+					<tr>
+						<th>bold</th>
+						<td style="font-weight: bold">Delete item</td>
+					</tr>
+					<tr>
+						<th>italic</th>
+						<td style="font-style: italic">Delete item</td>
+					</tr>
+					<tr>
+						<th>spaced caps</th>
+						<td style="text-transform: uppercase; letter-spacing: 0.2em">
+							Delete item
+						</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Icon size (<code>--icon-style-size</code>)</h3>
+				<p>Icon grows or shrinks around the same center; the text doesn't move.</p>
+				<table class="samples">
+					<tr>
+						<th>0.5em</th>
+						<td style="--icon-style-size: 0.5em">Delete item</td>
+					</tr>
+					<tr>
+						<th>1em</th>
+						<td style="--icon-style-size: 1em">Delete item</td>
+					</tr>
+					<tr>
+						<th>1.5em</th>
+						<td style="--icon-style-size: 1.5em">Delete item</td>
+					</tr>
+					<tr>
+						<th>2em</th>
+						<td style="--icon-style-size: 2em">Delete item</td>
+					</tr>
+					<tr>
+						<th>32px</th>
+						<td style="--icon-style-size: 32px">Delete item</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Spacing (<code>--icon-style-spacing</code>)</h3>
+				<p>Gap between icon and text; defaults to 0.3em.</p>
+				<table class="samples">
+					<tr>
+						<th>0</th>
+						<td style="--icon-style-spacing: 0">Delete item</td>
+					</tr>
+					<tr>
+						<th>default</th>
+						<td>Delete item</td>
+					</tr>
+					<tr>
+						<th>1em</th>
+						<td style="--icon-style-spacing: 1em">Delete item</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Color (<code>--icon-style-color</code>)</h3>
+				<p>Icon follows the text color unless overridden.</p>
+				<table class="samples">
+					<tr>
+						<th>color: red</th>
+						<td style="color: red">Delete item</td>
+					</tr>
+					<tr>
+						<th>icon blue</th>
+						<td style="--icon-style-color: blue">Delete item</td>
+					</tr>
+					<tr>
+						<th>red, icon 50%</th>
+						<td
+							style="
+								color: red;
+								--icon-style-color: color-mix(
+									in srgb,
+									currentColor 50%,
+									transparent
+								);
+							"
+						>
+							Delete item
+						</td>
+					</tr>
+				</table>
+			</article>
+
+			<article>
+				<h3>Inherited styling</h3>
+				<p>Size, color and spacing set on an ancestor apply to every icon inside it.</p>
+				<div class="themed">
+					<p style="--icon-start: var(--icon-trash)">Purple, 1.5em, wide gap</p>
+					<button style="--icon: var(--icon-github)">Same in a button</button>
+					<i class="icon" style="--icon: var(--icon-check)"></i>
+				</div>
+			</article>
+
+			<article>
+				<h3>Layout contexts</h3>
+				<p>
+					Icon keeps its size in flex and grid containers, and stays on the first line
+					when text wraps or truncates.
+				</p>
+				<button style="display: flex; inline-size: 9rem; --icon: var(--icon-trash)">
+					Flex button with a label long enough to wrap
+				</button>
+				<button
+					style="display: inline-flex; align-items: center; --icon: var(--icon-trash)"
+				>
+					Inline-flex, centered
+				</button>
+				<div
+					class="box"
+					style="
+						display: grid;
+						grid-template-columns: auto 1fr;
+						--icon-start: var(--icon-trash);
+					"
+				>
+					Grid: icon in the first column
+				</div>
+				<p class="box" style="inline-size: 12rem; --icon-start: var(--icon-trash)">
+					Wrapped paragraph: the icon is on the first line and the text wraps beneath it.
+				</p>
+				<p class="box truncated" style="--icon-start: var(--icon-trash)">
+					Truncated with an ellipsis
+				</p>
+			</article>
+
+			<article>
+				<h3>Direction and writing mode</h3>
+				<p>Start and end follow the writing direction.</p>
+				<p
+					dir="rtl"
+					class="align"
+					style="--icon-start: var(--icon-trash); --icon-end: var(--icon-link-external)"
+				>
+					RTL: trash on the right, link on the left
+				</p>
+				<p
+					style="
+						writing-mode: vertical-rl;
+						block-size: 12rem;
+						--icon-start: var(--icon-trash);
+						--icon-end: var(--icon-link-external);
+					"
+				>
+					Vertical: trash on top
+				</p>
+			</article>
+		</section>
+
+		<section id="isolation">
+			<h2>Isolation</h2>
+
+			<article>
+				<h3>Descendants</h3>
+				<p>Only the paragraph gets an icon; the bold, italic and link inside it don't.</p>
+				<p style="--icon-start: var(--icon-trash)">
+					Paragraph with <strong>bold</strong>, <em>italic</em> and
+					<a href="/">a link</a>.
+				</p>
+			</article>
+
+			<article>
+				<h3>Nested icons</h3>
+				<p>Each element gets exactly its own icon.</p>
+				<p style="--icon-start: var(--icon-trash)">
+					Outer trash,
+					<span style="--icon-start: var(--icon-check)">inner check</span>, outer again.
+				</p>
+			</article>
+
+			<article>
+				<h3><code>--icon</code> inherits</h3>
+				<p>
+					Set on a container, <code>--icon</code> reaches every component inside it: both
+					buttons get the icon, the text doesn't.
+				</p>
+				<div style="--icon: var(--icon-trash)">
+					Plain text <button>Button</button> <button>Another</button>
+				</div>
+			</article>
+
+			<article>
+				<h3>Classes without an icon</h3>
+				<p>No pseudo-element at all: no square, no gap. Nothing between the brackets.</p>
+				<span class="icon-start box">.icon-start</span>
+				<span class="icon-end box">.icon-end</span>
+				<p>[<i class="icon"></i>]</p>
+			</article>
+
+			<article>
+				<h3>Whitespace-only content</h3>
+				<p>
+					Counts as content (<code>:empty</code> doesn't match), so the gap is there.
+					Dotted box is wider than the icon.
+				</p>
+				<span class="box" style="--icon-start: var(--icon-trash)"> </span>
+			</article>
 		</section>
 	</body>
 </html>

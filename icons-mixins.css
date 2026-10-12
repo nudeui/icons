@@ -12,7 +12,10 @@
 @mixin --icon(--image) {
 	content: image-set(linear-gradient(transparent 0 100%), var(--image));
 	display: inline-block;
-	vertical-align: calc(1em - 0.48lh - var(--icon-style-size, 1em) / 2);
+	/* Centers the icon on the font's content area (0.5lh), nudged up slightly.
+	   The box's baseline is its inner line box's, i.e. half-leading + ascent
+	   below its top, regardless of its height. */
+	vertical-align: calc(var(--icon-style-size, 1em) / 2 - 0.48lh);
 	width: var(--icon-style-size, 1em);
 	height: var(--icon-style-size, 1em);
 	background-color: var(--icon-style-color, currentColor);
