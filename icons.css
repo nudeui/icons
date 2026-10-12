@@ -18,17 +18,18 @@
 /* Explicit opt-in, also works without style queries */
 :where(.icon, .icon-start)::before {
 	--icon-start: inherit;
-	--_csstools-p-rdzon3-0--arg-0: var(--icon-start);
-	--_csstools-p-rdzon3-1--image: var(--_csstools-p-rdzon3-0--arg-0);
-	content: image-set(linear-gradient(transparent 0 100%), var(--_csstools-p-rdzon3-1--image));
+	--_csstools-p-1q12exk-0--arg-0: var(--icon-start);
+	--_csstools-p-1q12exk-1--image: var(--_csstools-p-1q12exk-0--arg-0);
+	content: image-set(linear-gradient(transparent 0 100%), var(--_csstools-p-1q12exk-1--image));
 	display: inline-block;
-	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+	vertical-align: calc(1em - 0.48lh - var(--icon-style-size, 1em) / 2);
 	width: var(--icon-style-size, 1em);
 	height: var(--icon-style-size, 1em);
 	background-color: var(--icon-style-color, currentColor);
-	mask: var(--_csstools-p-rdzon3-1--image) no-repeat center / contain;
+	mask: var(--_csstools-p-1q12exk-1--image) no-repeat center / contain;
 	pointer-events: none;
 	forced-color-adjust: none;
+	flex: none;
 }
 
 :where(.icon:not(:empty), .icon-start:not(:empty))::before {
@@ -37,17 +38,18 @@
 
 :where(.icon-end)::after {
 	--icon-end: inherit;
-	--_csstools-p-rdzon3-2--arg-1: var(--icon-end);
-	--_csstools-p-rdzon3-3--image: var(--_csstools-p-rdzon3-2--arg-1);
-	content: image-set(linear-gradient(transparent 0 100%), var(--_csstools-p-rdzon3-3--image));
+	--_csstools-p-1q12exk-2--arg-1: var(--icon-end);
+	--_csstools-p-1q12exk-3--image: var(--_csstools-p-1q12exk-2--arg-1);
+	content: image-set(linear-gradient(transparent 0 100%), var(--_csstools-p-1q12exk-3--image));
 	display: inline-block;
-	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+	vertical-align: calc(1em - 0.48lh - var(--icon-style-size, 1em) / 2);
 	width: var(--icon-style-size, 1em);
 	height: var(--icon-style-size, 1em);
 	background-color: var(--icon-style-color, currentColor);
-	mask: var(--_csstools-p-rdzon3-3--image) no-repeat center / contain;
+	mask: var(--_csstools-p-1q12exk-3--image) no-repeat center / contain;
 	pointer-events: none;
 	forced-color-adjust: none;
+	flex: none;
 }
 
 :where(.icon-end:not(:empty))::after {
@@ -58,17 +60,21 @@
 @container style(--icon-start) {
 	::before {
 		--icon-start: inherit;
-		--_csstools-p-rdzon3-4--arg-2: var(--icon-start);
-		--_csstools-p-rdzon3-5--image: var(--_csstools-p-rdzon3-4--arg-2);
-		content: image-set(linear-gradient(transparent 0 100%), var(--_csstools-p-rdzon3-5--image));
+		--_csstools-p-1q12exk-4--arg-2: var(--icon-start);
+		--_csstools-p-1q12exk-5--image: var(--_csstools-p-1q12exk-4--arg-2);
+		content: image-set(
+			linear-gradient(transparent 0 100%),
+			var(--_csstools-p-1q12exk-5--image)
+		);
 		display: inline-block;
-		vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+		vertical-align: calc(1em - 0.48lh - var(--icon-style-size, 1em) / 2);
 		width: var(--icon-style-size, 1em);
 		height: var(--icon-style-size, 1em);
 		background-color: var(--icon-style-color, currentColor);
-		mask: var(--_csstools-p-rdzon3-5--image) no-repeat center / contain;
+		mask: var(--_csstools-p-1q12exk-5--image) no-repeat center / contain;
 		pointer-events: none;
 		forced-color-adjust: none;
+		flex: none;
 	}
 
 	:where(:not(:empty))::before {
@@ -79,17 +85,21 @@
 @container style(--icon-end) {
 	::after {
 		--icon-end: inherit;
-		--_csstools-p-rdzon3-6--arg-3: var(--icon-end);
-		--_csstools-p-rdzon3-7--image: var(--_csstools-p-rdzon3-6--arg-3);
-		content: image-set(linear-gradient(transparent 0 100%), var(--_csstools-p-rdzon3-7--image));
+		--_csstools-p-1q12exk-6--arg-3: var(--icon-end);
+		--_csstools-p-1q12exk-7--image: var(--_csstools-p-1q12exk-6--arg-3);
+		content: image-set(
+			linear-gradient(transparent 0 100%),
+			var(--_csstools-p-1q12exk-7--image)
+		);
 		display: inline-block;
-		vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+		vertical-align: calc(1em - 0.48lh - var(--icon-style-size, 1em) / 2);
 		width: var(--icon-style-size, 1em);
 		height: var(--icon-style-size, 1em);
 		background-color: var(--icon-style-color, currentColor);
-		mask: var(--_csstools-p-rdzon3-7--image) no-repeat center / contain;
+		mask: var(--_csstools-p-1q12exk-7--image) no-repeat center / contain;
 		pointer-events: none;
 		forced-color-adjust: none;
+		flex: none;
 	}
 
 	:where(:not(:empty))::after {
