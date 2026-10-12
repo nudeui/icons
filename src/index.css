@@ -12,7 +12,7 @@
 @mixin --icon(--image) {
 	content: image-set(linear-gradient(transparent 0 100%), var(--image));
 	display: inline-block;
-	vertical-align: calc(1em - 0.47lh - var(--icon-style-size, 1em) / 2);
+	vertical-align: calc(1em - 0.48lh - var(--icon-style-size, 1em) / 2);
 	width: var(--icon-style-size, 1em);
 	height: var(--icon-style-size, 1em);
 	background-color: var(--icon-style-color, currentColor);
