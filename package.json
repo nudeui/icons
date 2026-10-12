@@ -33,7 +33,7 @@
 	"style": "icons.css",
 	"exports": {
 		".": "./icons.css",
-		"./icons-mixins.css": "./icons-mixins.css"
+		"./mixins": "./icons-mixins.css"
 	},
 	"scripts": {
 		"build": "postcss icons-mixins.css -o icons.css && prettier --write icons.css",
