@@ -69,11 +69,14 @@ Icons are `1em` squares, so they follow `font-size`. Elements with no content (e
 
 These are separate from the `--icon-*` tokens so they can never collide with an icon name. They inherit, so set them on any ancestor to style every icon inside it.
 
-| Property               | Default        | Meaning                      |
-| ---------------------- | -------------- | ---------------------------- |
-| `--icon-style-color`   | `currentColor` | Icon color                   |
-| `--icon-style-size`    | `1em`          | Icon width and height        |
-| `--icon-style-spacing` | `0.3em`        | Gap between icon and content |
+| Property               | Default        | Meaning                                    |
+| ---------------------- | -------------- | ------------------------------------------ |
+| `--icon-style-color`   | `currentColor` | Icon color                                 |
+| `--icon-style-size`    | `1em`          | Icon width and height                      |
+| `--icon-style-spacing` | `0.3em`        | Gap between icon and content               |
+| `--icon-style-voffset` | `-0.02em`      | Vertical nudge, positive moves the icon up |
+
+Icons are centered on the font's cap height ([why](https://blog.kizu.dev/cap-height-align/)). Use `--icon-style-voffset` for optical corrections.
 
 ### 3. Let components own the location
 
