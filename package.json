@@ -1,6 +1,6 @@
 {
 	"name": "@nudeui/icons",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "CSS-only icon system: icons are design tokens, placed with a custom property, rendered with a mask",
 	"keywords": [
 		"icons",
